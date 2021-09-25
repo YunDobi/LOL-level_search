@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>Riot_searching</title>
+</head>
+
+<body>
+    <h1 id= Title>Riot level</h1>
+    <div id="bar">
+        <input id="Name" value="" type="text">
+        <button id="search">search</button>
+    </div>
+    <p></p>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $("#search").click(function(){
+                const apiUrl = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
+                const apiPrefix = "?api_key=";
+                const token = "RGAPI-734ab73f-a4f1-4953-93d7-b646eb2c706d";
+                const name = $("#Name").val().replaceAll(" ", "%20");
+
+                const URL = apiUrl + name + apiPrefix + token;
+
+                console.log(URL);
+                $.ajax({
+                    method: "get",
+                    url: URL,
+                    data: { name: $("#Name").val() },
+                    headers: {
+                        "Accept-Language": "en-ca",
+                        "Content-Type": "application/x-www-form-urlencodfed; charset=UTF-8"
+                    }
+                }).done(function (msg) {
+                    console.log(msg);
+                    console.log(msg.profileIconId);
+                    $( "p" ).append("<strong>"+ "Your level is " +msg.summonerLevel+ "."+"</strong>");
+                    if (msg.summonerLevel > 300) {
+                        $( "p" ).append("<br />"+"<strong> You played a lot:("+"<br />"+"</strong>");
+                    } else  {
+                        $( "p" ).append("<br />"+"<strong>You are normal:)"+"<br />"+"</strong>");
+                    }
+                });
+            })
+        })
+    </script>
+    </body>
+</html>
